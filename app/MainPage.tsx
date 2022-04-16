@@ -22,6 +22,12 @@ type Props = {};
 const { width, height } = Dimensions.get('window');
 import {authInfo,authToken} from './store'
 import {useAtom} from "jotai";
+// import ContentLoader, {Rect,Circle,Facebook} from 'react-content-loader/native'
+import {FirstLoader, SeecondLoader} from "./Components/WaitingLoader";
+import HighLightText from "./Components/HighLightText"
+// import { Shadow } from 'react-native-shadow-2';
+
+const MyFacebookLoader = () => <Facebook />
 
 import StackSwiper from './Components/StackSwiper'
 
@@ -197,12 +203,29 @@ function reducer(state:{},action:any) {
   }
 }
 
+function Loader(){
+  return (
+    <View>
+      {/*<Facebook backgroundColor={'lightgray'}/>*/}
+      {/*<ContentLoader viewBox="0 0 380 70" backgroundColor={"lightgray"}>*/}
+        {/*<Circle cx="30" cy="30" r="30" />*/}
+        {/*<Rect x="80" y="17" rx="4" ry="4" width="300" height="13" />*/}
+        {/*<Rect x="80" y="40" rx="3" ry="3" width="250" height="10" />*/}
+        {/*<Rect x="80" y="60" rx="3" ry="3" width="250" height="10" />*/}
+      {/*</ContentLoader>*/}
+    </View>
+  )
+}
+
 function MainPage(){
   const initialState = {
     selectedIndex:0,
     count:0
   }
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [count, setCount] = useState(0);
+  const [focustext, setfocustext] =useState("中国")
+  const [text,settext] = useState("我是一个中国人,在中国有很多好吃的东西")
   console.warn(state);
  // @ts-ignore
   let datas = data[state.selectedIndex]?extraData[data[state.selectedIndex]["data"]]:[];
@@ -212,7 +235,21 @@ function MainPage(){
     <PortalProvider>
       <SafeAreaView style={styles.container}>
         <PortalGate gateName={'jar'}/>
-        <StackSwiper/>
+
+        {/*<View style={{}}>*/}
+          {/*<HighLightText style={{fontSize:18}} focusValue={focustext} highlightStyle={{color:"red"}}>{text}</HighLightText>*/}
+          {/*<HighLightText style={{fontSize:18}} focusValue={focustext} highlightStyle={{color:"red",fontWeight:"500"}}>{text}</HighLightText>*/}
+        {/*</View>*/}
+        <View style={{justifyContent:"center",alignItems:"center"}}>
+          {/*<Shadow>*/}
+            {/*<Text style={{ margin: 20, fontSize: 20 }}>hello</Text>*/}
+          {/*</Shadow>*/}
+        </View>
+
+        <Text onPress={()=>setfocustext("好吃")} style={{padding:10,marginTop:20}}>testTarget</Text>
+        <Text onPress={()=>settext("我爱中国，我的祖国")} style={{padding:10,marginTop:20}}>testText</Text>
+        <Text onPress={()=>setCount(2)} style={{padding:10,marginTop:20}}>setCout</Text>
+        {/*<StackSwiper/>*/}
         {/*<FlatList*/}
           {/*data={datas}*/}
           {/*renderItem={({item,index})=>gameItem(item,index)}*/}
@@ -228,7 +265,8 @@ function MainPage(){
             {/*)*/}
           {/*}}*/}
         {/*/>*/}
-        <RenderHoverBt/>
+        {/*<FirstLoader/>*/}
+        {/*<RenderHoverBt/>*/}
       </SafeAreaView>
     </PortalProvider>
   );

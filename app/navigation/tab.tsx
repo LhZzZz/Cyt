@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, Image} from "react-native"
 import {createBottomTabNavigator,useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 import MainPage from '../MainPage'
 import PreferPage from '../PreferPage'
+import LoginPage from '../Pages/LoginPage'
 
 
 const Tab = createBottomTabNavigator();
@@ -38,7 +39,7 @@ const Tabs = () => {
         }
       }}
     >
-      <Tab.Screen name={"Home"} component={MainPage} options={{
+      <Tab.Screen name={"Home"} component={LoginPage} options={{
         tabBarIcon:({focused}) => (<View style={{backgroundColor:"green"}}><Text>Home</Text></View>)
       }}/>
       <Tab.Screen name={"Prefer"} component={PreferPage} options={{

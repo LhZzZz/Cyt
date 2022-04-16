@@ -12,6 +12,14 @@ target 'Cyt' do
     :hermes_enabled => false
   )
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'CytTests' do
     inherit! :complete
     # Pods for testing

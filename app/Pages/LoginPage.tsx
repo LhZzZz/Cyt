@@ -7,7 +7,7 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React, {Component, useEffect, useState, createContext, useContext, useCallback} from 'react';
+import React, {Component, useEffect, useState, createContext, useContext, useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, Text, View,SafeAreaView,TextInput,Alert,Image,Dimensions} from 'react-native';
 import {useNavigation,useRoute} from '@react-navigation/native'
 
@@ -30,7 +30,6 @@ let a = 0;
 function SubContent(){
 	const [state, setState] = useState(initialState)
 	a += 1
-	console.log("a:" ,a);
 	return (
 		<context.Provider value={{state,setState}}>
       <View style={{flex:1, backgroundColor:"gray"}}>
@@ -82,8 +81,8 @@ React将会检查前一个状态和参数是否和下一个状态和参数是否
 class风格中可以让类继承React.PureComponent达到同样的效果
 * */
 const MemoText = React.memo((props)=>{
-	console.log(props.target +'  momotext')
-  return <Text>{props.value} {props.target}</Text>
+	// console.warn(props.target +'  momotext')//如果props没变化的话,函数都不会进来
+  return <Text>122</Text>
 })
 
 //这里的props就是class的页面的this.props
@@ -106,14 +105,13 @@ function LoginPage(props:any) {
   * */
 
   const addCount = useCallback(()=>{
-  	console.log('addCount Call')
   	return (num:number) =>{
-				setCount(count + num)
+				setCount(count + 1)//1.这里count是外面的变量 所以形成了闭包 就算setCout了这里的count是不会变的
 		}
-	},[])
+	},[count])//2.但如果这里不是[]而是给一个会变的值，值变化时UseCallback就会重新构造函数，那就解决了上面的闭包问题
 
   const addNum = useCallback(()=>{
-    console.log('addNum Call',num)
+    console.warn('addNum Call',num)
     return (numer:number) =>{
       setNum(num + numer)
     }
@@ -125,15 +123,18 @@ function LoginPage(props:any) {
 	[]即只会创建一次，所以如果有引用外部的变量，就会形成闭包，变量是不会变得
 	* */
 
+	const memoizedValue = useMemo(()=>{ return count+1},[count])
+	console.warn(memoizedValue)
 	return (
 		<SafeAreaView style={{flex:1,backgroundColor:"white"}}>
-      <MemoText value={count} target={"count--"}/>
+			<Text>here:{memoizedValue}</Text>
+      <MemoText value={"count"} target={"count--"}/>
       <Text onPress={()=>addCount()(2)} style={{fontWeight:"500",fontSize:20,backgroundColor:"lightgray",padding:10}}>{count} add count</Text>
 			<Text onPress={()=>setCount(prevState => {
 				return prevState + 1
 			})} style={{fontWeight:"500",fontSize:20,backgroundColor:"gray",padding:10}}>{count} set count</Text>
 
-      <MemoText value={num} target={"num--"}/>
+      {/*<MemoText value={num} target={"num--"}/>*/}
 			<Text onPress={()=>addNum()(2)} style={{fontWeight:"500",fontSize:20,backgroundColor:"lightgray",padding:10}}>{num} add num</Text>
       <Text onPress={()=>setNum(prevState => {
         return prevState + 1
