@@ -1,0 +1,6 @@
+module Pods_Cyt_CytTests {
+  umbrella header "Pods-Cyt-CytTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
